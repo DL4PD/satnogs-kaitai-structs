@@ -29,13 +29,20 @@ types:
   elfin_tlm_data:
     seq:
       - id: frame_start
-        type: u2
+        type: u1
         doc: '0x94 normal frame, 0x27 escaped frame'
       - id: beacon_setting
         type: u1
       - id: status_1
         type: u1
+        doc: 'Safe mode (first bit), early orbit flags (last 4 bits)'
       - id: status_2
+        type: u1
+        doc: |
+          Bits 7 to 3 (in order):
+          Payload Power, 9V Boost, battery heater allow, heater force,
+          heater alert
+      - id: reserved
         type: u1
       - id: hskp_pwr_1
         type: hskp_pwr
