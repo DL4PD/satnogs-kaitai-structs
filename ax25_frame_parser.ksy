@@ -1,7 +1,7 @@
 meta:
   id: ax25_frame_parser
   endian: be
-  doc: 'Current implementation only supports AX.25 I frames'
+  doc: 'Current implementation only supports AX.25 UI frames'
 seq:
   - id: ax25_header
     type: ax25_hdr
@@ -14,18 +14,24 @@ types:
   ax25_hdr:
     seq:
       - id: dest_callsign
-        type: str
-        encoding: ASCII
-        size: 6
+        type: dest_callsign
       - id: dest_ssid
         type: u1
       - id: src_callsign
-        type: str
-        encoding: ASCII
-        size: 6
+        type: src_callsign
       - id: src_ssid
         type: u1
       - id: ctl
         type: u1
       - id: pid
         type: u1
+  dest_callsign:
+    seq:
+      - id: dest_callsign
+        process: ror(1)
+        size: 6
+  src_callsign:
+    seq:
+      - id: src_callsign
+        process: ror(1)
+        size: 6
