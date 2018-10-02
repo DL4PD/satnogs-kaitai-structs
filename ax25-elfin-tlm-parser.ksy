@@ -11,14 +11,10 @@ types:
   ax25_hdr:
     seq:
       - id: dest_callsign
-        type: str
-        encoding: ASCII
         size: 6
       - id: dest_ssid
         type: u1
       - id: src_callsign
-        type: str
-        encoding: ASCII
         size: 6
       - id: src_ssid
         type: u1
