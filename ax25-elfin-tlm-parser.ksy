@@ -1,5 +1,5 @@
 meta:
-  id: ax25_elfin_tlm_parser
+  id: elfin
   endian: be
 seq:
   - id: ax25_header
@@ -11,22 +11,53 @@ types:
   ax25_hdr:
     seq:
       - id: dest_callsign
-        size: 6
+        type: dest_callsign
       - id: dest_ssid
         type: u1
       - id: src_callsign
-        size: 6
+        type: src_callsign
       - id: src_ssid
         type: u1
       - id: ctl
         type: u1
       - id: pid
         type: u1
+  dest_callsign:
+    seq:
+      - id: dest_callsign
+        process: ror(1)
+        size: 6
+  src_callsign:
+    seq:
+      - id: src_callsign
+        process: ror(1)
+        size: 6
+  preprocessor:
+    seq:
+      - id: databuf
+        size-eos: true
+        process: elfin_pp
   elfin_tlm_data:
     seq:
       - id: frame_start
         type: u1
-        doc: '0x94 normal frame, 0x27 escaped frame'
+        doc: |
+          0x94 marks the framestart
+          Any data byte following after this framestart must not contain:
+          0x27, 0x5e or 0x93, as 0x93 is the framestart and 0x5e is the
+          frameend! If a value reaches 0x93 or 0x5e, this byte is escaped by
+          0x27. This also throws an exception on values containing 0x27 itself.
+          An additional escape character (0x27) is added to escape the escape
+          character.
+          Substitutions:
+          b'\x2727' -> b'\x27'
+          b'\x275e' -> b'\x5e'
+          b'\x2793' -> b'\x93'
+          With some values containing 0x27 the maximum size of an ax.25 UI
+          frame is exceeded (254 bytes).
+          The 'preprocessing' to remove the escapoe sequences is done by an 
+          external process called 'elfin_pp' and is implemented in a separate
+          file.
       - id: beacon_setting
         type: u1
       - id: status_1
@@ -59,14 +90,15 @@ types:
       - id: errors
         type: errors
       - id: fc_salt
-        type: str
         size: 4
-        encoding: ASCII
       - id: fc_crc
         type: u1
       - id: frame_end
         type: u1
         doc: '0x5e marks the end of a frame'
+    instances:
+      elfin_tlm_data:
+        type: preprocessor
   bcd_date:
     seq:
       - id: year
@@ -307,3 +339,4 @@ types:
     seq:
       - id: current
         type: u2
+
