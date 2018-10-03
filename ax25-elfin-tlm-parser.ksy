@@ -7,6 +7,8 @@ seq:
     size: 16
   - id: ax25_info
     type: elfin_tlm_data
+    process: elfin_pp
+    size-eos: true
 types:
   ax25_hdr:
     seq:
@@ -32,14 +34,9 @@ types:
       - id: src_callsign
         process: ror(1)
         size: 6
-  preprocessor:
-    seq:
-      - id: databuf
-        size-eos: true
-        process: elfin_pp
   elfin_tlm_data:
     seq:
-      - id: frame_start
+      - id: elfin_frame_start
         type: u1
         doc: |
           0x94 marks the framestart
@@ -58,285 +55,361 @@ types:
           The 'preprocessing' to remove the escapoe sequences is done by an 
           external process called 'elfin_pp' and is implemented in a separate
           file.
-      - id: beacon_setting
+
+      - id: elfin_beacon_setting
         type: u1
-      - id: status_1
+      - id: elfin_status_1
         type: u1
         doc: 'Safe mode (first bit), early orbit flags (last 4 bits)'
-      - id: status_2
+      - id: elfin_status_2
         type: u1
         doc: |
           Bits 7 to 3 (in order):
           Payload Power, 9V Boost, battery heater allow, heater force,
           heater alert
-      - id: reserved
+      - id: elfin_reserved
         type: u1
-      - id: hskp_pwr_1
-        type: hskp_pwr
-      - id: hskp_pwr_2
-        type: hskp_pwr
-      - id: acb_pc_data
-        type: acb_pc_data
-      - id: acb_pc_data_2
-        type: acb_pc_data_2
-      - id: acb_sense
-        type: acb_sense
-      - id: fc_counters
-        type: fc_counters
-      - id: radio_tlm
-        type: radio_tlm
-      - id: radio_cfg_read
-        type: radio_cfg_read
-      - id: errors
-        type: errors
+
+      - id: elfin_hskp_pwr1_rtcc_year
+        type: u1
+      - id: elfin_hskp_pwr1_rtcc_month
+        type: u1
+      - id: elfin_hskp_pwr1_rtcc_day
+        type: u1
+      - id: elfin_hskp_pwr1_rtcc_hour
+        type: u1
+      - id: elfin_hskp_pwr1_rtcc_minute
+        type: u1
+      - id: elfin_hskp_pwr1_rtcc_second
+        type: u1
+      - id: elfin_hskp_pwr1_adc_data_adc_sa_volt_12
+        type: u2
+      - id: elfin_hskp_pwr1_adc_data_adc_sa_volt_34
+        type: u2
+      - id: elfin_hskp_pwr1_adc_data_adc_sa_volt_56
+        type: u2
+      - id: elfin_hskp_pwr1_adc_data_sa_short_circuit_current
+        type: u2
+      - id: elfin_hskp_pwr1_adc_data_bat_2_volt
+        type: u2
+      - id: elfin_hskp_pwr1_adc_data_bat_1_volt
+        type: u2
+      - id: elfin_hskp_pwr1_adc_data_reg_sa_volt_1
+        type: u2
+      - id: elfin_hskp_pwr1_adc_data_reg_sa_volt_2
+        type: u2
+      - id: elfin_hskp_pwr1_adc_data_reg_sa_volt_3
+        type: u2
+      - id: elfin_hskp_pwr1_adc_data_power_bus_current_1
+        type: u2
+      - id: elfin_hskp_pwr1_adc_data_power_bus_current_2
+        type: u2
+      - id: elfin_hskp_pwr1_bat_mon_1_avg_cur_reg
+        type: u2
+      - id: elfin_hskp_pwr1_bat_mon_1_temperature_register
+        type: u2
+      - id: elfin_hskp_pwr1_bat_mon_1_volt_reg
+        type: u2
+      - id: elfin_hskp_pwr1_bat_mon_1_cur_reg
+        type: u2
+      - id: elfin_hskp_pwr1_bat_mon_1_acc_curr_reg
+        type: u2
+      - id: elfin_hskp_pwr1_bat_mon_2_avg_cur_reg
+        type: u2
+      - id: elfin_hskp_pwr1_bat_mon_2_temperature_register
+        type: u2
+      - id: elfin_hskp_pwr1_bat_mon_2_volt_reg
+        type: u2
+      - id: elfin_hskp_pwr1_bat_mon_2_cur_reg
+        type: u2
+      - id: elfin_hskp_pwr1_bat_mon_2_acc_curr_reg
+        type: u2
+      - id: elfin_hskp_pwr1_bv_mon
+        type: u2
+      - id: elfin_hskp_pwr1_tmps_tmp1
+        type: u2
+      - id: elfin_hskp_pwr1_tmps_tmp2
+        type: u2
+      - id: elfin_hskp_pwr1_tmps_tmp3
+        type: u2
+      - id: elfin_hskp_pwr1_tmps_tmp4
+        type: u2
+      - id: elfin_hskp_pwr1_accumulated_curr_bat1_rarc
+        type: u1
+      - id: elfin_hskp_pwr1_accumulated_curr_bat1_rsrc
+        type: u1
+      - id: elfin_hskp_pwr1_accumulated_curr_bat2_rarc
+        type: u1
+      - id: elfin_hskp_pwr1_accumulated_curr_bat2_rsrc
+        type: u1
+
+      - id: elfin_hskp_pwr2_rtcc_year
+        type: u1
+      - id: elfin_hskp_pwr2_rtcc_month
+        type: u1
+      - id: elfin_hskp_pwr2_rtcc_day
+        type: u1
+      - id: elfin_hskp_pwr2_rtcc_hour
+        type: u1
+      - id: elfin_hskp_pwr2_rtcc_minute
+        type: u1
+      - id: elfin_hskp_pwr2_rtcc_second
+        type: u1
+      - id: elfin_hskp_pwr2_adc_data_adc_sa_volt_12
+        type: u2
+      - id: elfin_hskp_pwr2_adc_data_adc_sa_volt_34
+        type: u2
+      - id: elfin_hskp_pwr2_adc_data_adc_sa_volt_56
+        type: u2
+      - id: elfin_hskp_pwr2_adc_data_sa_short_circuit_current
+        type: u2
+      - id: elfin_hskp_pwr2_adc_data_bat_2_volt
+        type: u2
+      - id: elfin_hskp_pwr2_adc_data_bat_1_volt
+        type: u2
+      - id: elfin_hskp_pwr2_adc_data_reg_sa_volt_1
+        type: u2
+      - id: elfin_hskp_pwr2_adc_data_reg_sa_volt_2
+        type: u2
+      - id: elfin_hskp_pwr2_adc_data_reg_sa_volt_3
+        type: u2
+      - id: elfin_hskp_pwr2_adc_data_power_bus_current_1
+        type: u2
+      - id: elfin_hskp_pwr2_adc_data_power_bus_current_2
+        type: u2
+      - id: elfin_hskp_pwr2_bat_mon_1_avg_cur_reg
+        type: u2
+      - id: elfin_hskp_pwr2_bat_mon_1_temperature_register
+        type: u2
+      - id: elfin_hskp_pwr2_bat_mon_1_volt_reg
+        type: u2
+      - id: elfin_hskp_pwr2_bat_mon_1_cur_reg
+        type: u2
+      - id: elfin_hskp_pwr2_bat_mon_1_acc_curr_reg
+        type: u2
+      - id: elfin_hskp_pwr2_bat_mon_2_avg_cur_reg
+        type: u2
+      - id: elfin_hskp_pwr2_bat_mon_2_temperature_register
+        type: u2
+      - id: elfin_hskp_pwr2_bat_mon_2_volt_reg
+        type: u2
+      - id: elfin_hskp_pwr2_bat_mon_2_cur_reg
+        type: u2
+      - id: elfin_hskp_pwr2_bat_mon_2_acc_curr_reg
+        type: u2
+      - id: elfin_hskp_pwr2_bv_mon
+        type: u2
+      - id: elfin_hskp_pwr2_tmps_tmp1
+        type: u2
+      - id: elfin_hskp_pwr2_tmps_tmp2
+        type: u2
+      - id: elfin_hskp_pwr2_tmps_tmp3
+        type: u2
+      - id: elfin_hskp_pwr2_tmps_tmp4
+        type: u2
+      - id: elfin_hskp_pwr2_accumulated_curr_bat1_rarc
+        type: u1
+      - id: elfin_hskp_pwr2_accumulated_curr_bat1_rsrc
+        type: u1
+      - id: elfin_hskp_pwr2_accumulated_curr_bat2_rarc
+        type: u1
+      - id: elfin_hskp_pwr2_accumulated_curr_bat2_rsrc
+        type: u1
+
+      - id: elfin_acb_pc_data1_rtcc_year
+        type: u1
+      - id: elfin_acb_pc_data1_rtcc_month
+        type: u1
+      - id: elfin_acb_pc_data1_rtcc_day
+        type: u1
+      - id: elfin_acb_pc_data1_rtcc_hour
+        type: u1
+      - id: elfin_acb_pc_data1_rtcc_minute
+        type: u1
+      - id: elfin_acb_pc_data1_rtcc_second
+        type: u1
+      - id: elfin_acb_pc_data1_acb_mrm_x
+        type: u2
+      - id: elfin_acb_pc_data1_acb_mrm_y
+        type: u2
+      - id: elfin_acb_pc_data1_acb_mrm_z
+        type: u2
+      - id: elfin_acb_pc_data1_ipdu_mrm_x
+        type: u2
+      - id: elfin_acb_pc_data1_ipdu_mrm_y
+        type: u2
+      - id: elfin_acb_pc_data1_ipdu_mrm_z
+        type: u2
+      - id: elfin_acb_pc_data1_tmps_tmp1
+        type: u2
+      - id: elfin_acb_pc_data1_tmps_tmp2
+        type: u2
+      - id: elfin_acb_pc_data1_tmps_tmp3
+        type: u2
+      - id: elfin_acb_pc_data1_tmps_tmp4
+        type: u2
+
+      - id: elfin_acb_pc_data2_rtcc_year
+        type: u1
+      - id: elfin_acb_pc_data2_rtcc_month
+        type: u1
+      - id: elfin_acb_pc_data2_rtcc_day
+        type: u1
+      - id: elfin_acb_pc_data2_rtcc_hour
+        type: u1
+      - id: elfin_acb_pc_data2_rtcc_minute
+        type: u1
+      - id: elfin_acb_pc_data2_rtcc_second
+        type: u1
+      - id: elfin_acb_pc_data2_acb_mrm_x
+        type: u2
+      - id: elfin_acb_pc_data2_acb_mrm_y
+        type: u2
+      - id: elfin_acb_pc_data2_acb_mrm_z
+        type: u2
+      - id: elfin_acb_pc_data2_ipdu_mrm_x
+        type: u2
+      - id: elfin_acb_pc_data2_ipdu_mrm_y
+        type: u2
+      - id: elfin_acb_pc_data2_ipdu_mrm_z
+        type: u2
+      - id: elfin_acb_pc_data2_tmps_tmp1
+        type: u2
+      - id: elfin_acb_pc_data2_tmps_tmp2
+        type: u2
+      - id: elfin_acb_pc_data2_tmps_tmp3
+        type: u2
+      - id: elfin_acb_pc_data2_tmps_tmp4
+        type: u2
+
+      - id: elfin_acb_sense_adc_data_current
+        type: u2
+      - id: elfin_acb_sense_adc_data_voltage
+        type: u2
+
+      - id: elfin_fc_counters_cmds_recv
+        type: u1
+      - id: elfin_fc_counters_badcmds_recv
+        type: u1
+      - id: elfin_fc_counters_badpkts_fm_radio
+        type: u1
+      - id: elfin_fc_counters_fcpkts_fm_radio
+        type: u1
+      - id: elfin_fc_counters_errors
+        type: u1
+      - id: elfin_fc_counters_reboots
+        type: u1
+      - id: elfin_fc_counters_intrnl_wdttmout
+        type: u1
+      - id: elfin_fc_counters_brwnouts
+        type: u1
+      - id: elfin_fc_counters_wdpicrst
+        type: u1
+      - id: elfin_fc_counters_porst
+        type: u1
+      - id: elfin_fc_counters_uart1_recvpkts
+        type: u1
+      - id: elfin_fc_counters_uart1_parseerrs
+        type: u1
+      - id: elfin_fc_counters_sips_ovcur_evts
+        type: u1
+      - id: elfin_fc_counters_vu1_on
+        type: u1
+      - id: elfin_fc_counters_vu1_off
+        type: u1
+      - id: elfin_fc_counters_vu2_on
+        type: u1
+      - id: elfin_fc_counters_vu2_off
+        type: u1
+
+      - id: elfin_radio_tlm_rssi
+        type: u1
+      - id: elfin_radio_tlm_bytes_rx
+        type: u4
+      - id: elfin_radio_tlm_bytes_tx
+        type: u4
+
+      - id: elfin_radio_cfg_read_radio_palvl
+        type: u1
+
+      - id: elfin_errors_error1_day
+        type: u1
+      - id: elfin_errors_error1_hour
+        type: u1
+      - id: elfin_errors_error1_minute
+        type: u1
+      - id: elfin_errors_error1_second
+        type: u1
+      - id: elfin_errors_error1_error
+        type: u1
+      - id: elfin_errors_error2_day
+        type: u1
+      - id: elfin_errors_error2_hour
+        type: u1
+      - id: elfin_errors_error2_minute
+        type: u1
+      - id: elfin_errors_error2_second
+        type: u1
+      - id: elfin_errors_error2_error
+        type: u1
+      - id: elfin_errors_error3_day
+        type: u1
+      - id: elfin_errors_error3_hour
+        type: u1
+      - id: elfin_errors_error3_minute
+        type: u1
+      - id: elfin_errors_error3_second
+        type: u1
+      - id: elfin_errors_error3_error
+        type: u1
+      - id: elfin_errors_error4_day
+        type: u1
+      - id: elfin_errors_error4_hour
+        type: u1
+      - id: elfin_errors_error4_minute
+        type: u1
+      - id: elfin_errors_error4_second
+        type: u1
+      - id: elfin_errors_error4_error
+        type: u1
+      - id: elfin_errors_error5_day
+        type: u1
+      - id: elfin_errors_error5_hour
+        type: u1
+      - id: elfin_errors_error5_minute
+        type: u1
+      - id: elfin_errors_error5_second
+        type: u1
+      - id: elfin_errors_error5_error
+        type: u1
+      - id: elfin_errors_error6_day
+        type: u1
+      - id: elfin_errors_error6_hour
+        type: u1
+      - id: elfin_errors_error6_minute
+        type: u1
+      - id: elfin_errors_error6_second
+        type: u1
+      - id: elfin_errors_error6_error
+        type: u1
+      - id: elfin_errors_error7_day
+        type: u1
+      - id: elfin_errors_error7_hour
+        type: u1
+      - id: elfin_errors_error7_minute
+        type: u1
+      - id: elfin_errors_error7_second
+        type: u1
+      - id: elfin_errors_error7_error
+        type: u1
+        
       - id: fc_salt
         size: 4
+
       - id: fc_crc
         type: u1
+
       - id: frame_end
         type: u1
         doc: '0x5e marks the end of a frame'
-    instances:
-      elfin_tlm_data:
-        type: preprocessor
-  bcd_date:
-    seq:
-      - id: year
-        type: u1
-      - id: month
-        type: u1
-      - id: day
-        type: u1
-      - id: hour
-        type: u1
-      - id: minute
-        type: u1
-      - id: second
-        type: u1
-  bcd_clk:
-    seq:
-      - id: day
-        type: u1
-      - id: hour
-        type: u1
-      - id: minute
-        type: u1
-      - id: second
-        type: u1
-  hskp_pwr:
-    seq:
-      - id: rtcc
-        type: bcd_date
-      - id: adc_data
-        type: adc_data
-      - id: bat_mon_1
-        type: bat_mon
-      - id: bat_mon_2
-        type: bat_mon
-      - id: bv_mon
-        type: bv_mon
-      - id: tmps
-        type: tmps
-      - id: accumulated_curr
-        type: acu_curr
-  acb_pc_data:
-    seq:
-      - id: acb_pc_data_rtcc
-        type: bcd_date
-      - id: acb_pc_data_acb_mrm
-        type: mrm_xyz
-      - id: acb_pc_data_ipdu_mrm
-        type: mrm_xyz
-      - id: acb_pc_data_tmps
-        type: tmps
-  acb_pc_data_2:
-    seq:
-      - id: rtcc
-        type: bcd_date
-      - id: mrm_a
-        type: mrm_xyz
-      - id: mrm_b
-        type: mrm_xyz
-      - id: tmps
-        type: tmps
-  mrm_xyz:
-    seq:
-      - id: mrm_x
-        type: u2
-      - id: mrm_y
-        type: u2
-      - id: mrm_z
-        type: u2
-  tmps:
-    seq:
-      - id: tmp_1
-        type: u2
-      - id: tmp_2
-        type: u2
-      - id: tmp_3
-        type: u2
-      - id: tmp_4
-        type: u2
-  acb_sense:
-    seq:
-      - id: acb_current
-        type: u2
-      - id: acb_voltage
-        type: u2
-  fc_counters:
-    seq:
-      - id: cmds_rxed
-        type: u1
-      - id: bad_cmds_rxed
-        type: u1
-      - id: bad_pkts_fm_radio
-        type: u1
-      - id: fc_pkts_fm_radio
-        type: u1
-      - id: errors
-        type: u1
-      - id: reboots
-        type: u1
-      - id: int_wdt_timeout
-        type: u1
-      - id: brownouts
-        type: u1
-      - id: wd_pic_resets
-        type: u1
-      - id: pwr_on_resets
-        type: u1
-      - id: uart1_resets
-        type: u1
-      - id: uart1_parse_errors
-        type: u1
-      - id: sips_overcur_evts
-        type: u1
-      - id: vu1_on
-        type: u1
-      - id: vu1_off
-        type: u1
-      - id: vu2_on
-        type: u1
-      - id: vu2_off
-        type: u1
-  radio_tlm:
-    seq:
-      - id: rssi
-        type: u1
-      - id: bytes_rx
-        type: u4
-      - id: bytes_tx
-        type: u4
-  radio_cfg_read:
-    seq:
-      - id: radio_pa_lvl
-        type: u1
-  errors:
-    seq:
-      - id: error_1
-        type: timestamped_error
-      - id: error_2
-        type: timestamped_error
-      - id: error_3
-        type: timestamped_error
-      - id: error_4
-        type: timestamped_error
-      - id: error_5
-        type: timestamped_error
-      - id: error_6
-        type: timestamped_error
-      - id: error_7
-        type: timestamped_error
-  timestamped_error:
-    seq:
-      - id: e_time
-        type: bcd_clk
-      - id: errno
-        type: u1
-  bat_mon:
-    seq:
-      - id: avg_cur_reg
-        type: u2
-      - id: temperature_register
-        type: u2
-      - id: volt_reg
-        type: u2
-      - id: cur_reg
-        type: u2
-      - id: acc_curr_reg
-        type: u2
-  adc_data:
-    seq:
-      - id: adc_sa_volt_12
-        type: sa_volt
-      - id: adc_sa_volt_34
-        type: sa_volt
-      - id: adc_sa_volt_56
-        type: sa_volt
-      - id: sa_short_circuit_current
-        type: sa_current
-      - id: bat_2_volt
-        type: bat_volt
-      - id: bat_1_volt
-        type: bat_volt
-      - id: reg_sa_volt_1
-        type: sa_volt
-      - id: reg_sa_volt_2
-        type: sa_volt
-      - id: reg_sa_volt_3
-        type: sa_volt
-      - id: power_bus_current_1
-        type: pbus_cur
-      - id: power_bus_current_2
-        type: pbus_cur
-  bv_mon:
-    seq:
-      - id: bus_voltage
-        type: bus_voltage
-  bus_voltage:
-    seq:
-      - id: voltage
-        type: u2
-  acu_curr:
-    seq:
-      - id: bat_1_rarc
-        type: u1
-      - id: bat_1_rsrc
-        type: u1
-      - id: bat_2_rarc
-        type: u1
-      - id: bat_2_rsrc
-        type: u1
-  sa_volt:
-    seq:
-      - id: voltage
-        type: u2
-  sa_current:
-    seq:
-      - id: current
-        type: u2
-  bat_volt:
-    seq:
-      - id: voltage
-        type: u2
-  pbus_cur:
-    seq:
-      - id: current
-        type: u2
-  avg_cur:
-    seq:
-      - id: current
-        type: u2
-  temp:
-    seq:
-      - id: temperature
-        type: u2
-  volt:
-    seq:
-      - id: voltage
-        type: u2
-  curr:
-    seq:
-      - id: current
-        type: u2
 
