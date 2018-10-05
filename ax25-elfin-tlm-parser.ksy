@@ -4,9 +4,11 @@ meta:
 seq:
   - id: ax25_header
     type: ax25_hdr
+    doc-ref: 'https://www.tapr.org/pub_ax25.html'
     size: 16
   - id: ax25_info
     type: elfin_tlm_data
+    doc-ref: 'https://elfin.igpp.ucla.edu/s/Beacon-Format_v2.xlsx'
     process: elfin_pp
     size-eos: true
 types:
@@ -58,15 +60,31 @@ types:
 
       - id: elfin_beacon_setting
         type: u1
-      - id: elfin_status_1
-        type: u1
+      - id: elfin_status_1_safe_mode
+        type: b1
+      - id: elfin_status_1_reserved
+        type: b3
+      - id: elfin_status_1_early_orbit
+        type: b4
         doc: 'Safe mode (first bit), early orbit flags (last 4 bits)'
-      - id: elfin_status_2
-        type: u1
+        
+      - id: elfin_status_2_payload_power
+        type: b1
+      - id: elfin_status_2_9v_boost
+        type: b1
+      - id: elfin_status_2_bat_htr_allow
+        type: b1
+      - id: elfin_status_2_htr_force
+        type: b1
+      - id: elfin_status_2_htr_alert
+        type: b1
+      - id: elfin_status_2_reserved
+        type: b3
         doc: |
           Bits 7 to 3 (in order):
           Payload Power, 9V Boost, battery heater allow, heater force,
           heater alert
+          
       - id: elfin_reserved
         type: u1
 
@@ -83,49 +101,49 @@ types:
       - id: elfin_hskp_pwr1_rtcc_second
         type: u1
       - id: elfin_hskp_pwr1_adc_data_adc_sa_volt_12
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_adc_data_adc_sa_volt_34
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_adc_data_adc_sa_volt_56
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_adc_data_sa_short_circuit_current
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_adc_data_bat_2_volt
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_adc_data_bat_1_volt
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_adc_data_reg_sa_volt_1
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_adc_data_reg_sa_volt_2
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_adc_data_reg_sa_volt_3
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_adc_data_power_bus_current_1
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_adc_data_power_bus_current_2
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_bat_mon_1_avg_cur_reg
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_bat_mon_1_temperature_register
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_bat_mon_1_volt_reg
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_bat_mon_1_cur_reg
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_bat_mon_1_acc_curr_reg
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_bat_mon_2_avg_cur_reg
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_bat_mon_2_temperature_register
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_bat_mon_2_volt_reg
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_bat_mon_2_cur_reg
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_bat_mon_2_acc_curr_reg
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_bv_mon
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_tmps_tmp1
         type: u2
       - id: elfin_hskp_pwr1_tmps_tmp2
@@ -283,9 +301,9 @@ types:
         type: u2
 
       - id: elfin_acb_sense_adc_data_current
-        type: u2
+        type: u2le
       - id: elfin_acb_sense_adc_data_voltage
-        type: u2
+        type: u2le
 
       - id: elfin_fc_counters_cmds_recv
         type: u1
@@ -403,13 +421,13 @@ types:
       - id: elfin_errors_error7_error
         type: u1
         
-      - id: fc_salt
+      - id: elfin_fc_salt
         size: 4
 
-      - id: fc_crc
+      - id: elfin_fc_crc
         type: u1
 
-      - id: frame_end
+      - id: elfin_frame_end
         type: u1
         doc: '0x5e marks the end of a frame'
 
