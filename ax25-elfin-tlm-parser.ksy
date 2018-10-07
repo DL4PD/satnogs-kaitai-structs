@@ -1,6 +1,6 @@
 meta:
   id: elfin
-  endian: be
+  endian: le
 seq:
   - id: ax25_header
     type: ax25_hdr
@@ -145,13 +145,13 @@ types:
       - id: elfin_hskp_pwr1_bv_mon
         type: s2
       - id: elfin_hskp_pwr1_tmps_tmp1
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_tmps_tmp2
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_tmps_tmp3
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_tmps_tmp4
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr1_accumulated_curr_bat1_rarc
         type: u1
       - id: elfin_hskp_pwr1_accumulated_curr_bat1_rsrc
@@ -174,57 +174,57 @@ types:
       - id: elfin_hskp_pwr2_rtcc_second
         type: u1
       - id: elfin_hskp_pwr2_adc_data_adc_sa_volt_12
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_adc_data_adc_sa_volt_34
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_adc_data_adc_sa_volt_56
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_adc_data_sa_short_circuit_current
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_adc_data_bat_2_volt
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_adc_data_bat_1_volt
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_adc_data_reg_sa_volt_1
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_adc_data_reg_sa_volt_2
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_adc_data_reg_sa_volt_3
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_adc_data_power_bus_current_1
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_adc_data_power_bus_current_2
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_bat_mon_1_avg_cur_reg
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_bat_mon_1_temperature_register
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_bat_mon_1_volt_reg
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_bat_mon_1_cur_reg
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_bat_mon_1_acc_curr_reg
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_bat_mon_2_avg_cur_reg
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_bat_mon_2_temperature_register
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_bat_mon_2_volt_reg
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_bat_mon_2_cur_reg
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_bat_mon_2_acc_curr_reg
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_bv_mon
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_tmps_tmp1
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_tmps_tmp2
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_tmps_tmp3
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_tmps_tmp4
-        type: u2
+        type: s2
       - id: elfin_hskp_pwr2_accumulated_curr_bat1_rarc
         type: u1
       - id: elfin_hskp_pwr2_accumulated_curr_bat1_rsrc
@@ -247,25 +247,25 @@ types:
       - id: elfin_acb_pc_data1_rtcc_second
         type: u1
       - id: elfin_acb_pc_data1_acb_mrm_x
-        type: u2
+        type: s2
       - id: elfin_acb_pc_data1_acb_mrm_y
-        type: u2
+        type: s2
       - id: elfin_acb_pc_data1_acb_mrm_z
-        type: u2
+        type: s2
       - id: elfin_acb_pc_data1_ipdu_mrm_x
-        type: u2
+        type: s2
       - id: elfin_acb_pc_data1_ipdu_mrm_y
-        type: u2
+        type: s2
       - id: elfin_acb_pc_data1_ipdu_mrm_z
-        type: u2
+        type: s2
       - id: elfin_acb_pc_data1_tmps_tmp1
-        type: u2
+        type: s2
       - id: elfin_acb_pc_data1_tmps_tmp2
-        type: u2
+        type: s2
       - id: elfin_acb_pc_data1_tmps_tmp3
-        type: u2
+        type: s2
       - id: elfin_acb_pc_data1_tmps_tmp4
-        type: u2
+        type: s2
 
       - id: elfin_acb_pc_data2_rtcc_year
         type: u1
@@ -280,30 +280,30 @@ types:
       - id: elfin_acb_pc_data2_rtcc_second
         type: u1
       - id: elfin_acb_pc_data2_acb_mrm_x
-        type: u2
+        type: s2
       - id: elfin_acb_pc_data2_acb_mrm_y
-        type: u2
+        type: s2
       - id: elfin_acb_pc_data2_acb_mrm_z
-        type: u2
+        type: s2
       - id: elfin_acb_pc_data2_ipdu_mrm_x
-        type: u2
+        type: s2
       - id: elfin_acb_pc_data2_ipdu_mrm_y
-        type: u2
+        type: s2
       - id: elfin_acb_pc_data2_ipdu_mrm_z
-        type: u2
+        type: s2
       - id: elfin_acb_pc_data2_tmps_tmp1
-        type: u2
+        type: s2
       - id: elfin_acb_pc_data2_tmps_tmp2
-        type: u2
+        type: s2
       - id: elfin_acb_pc_data2_tmps_tmp3
-        type: u2
+        type: s2
       - id: elfin_acb_pc_data2_tmps_tmp4
-        type: u2
+        type: s2
 
       - id: elfin_acb_sense_adc_data_current
-        type: u2le
+        type: s2
       - id: elfin_acb_sense_adc_data_voltage
-        type: u2le
+        type: s2
 
       - id: elfin_fc_counters_cmds_recv
         type: u1
