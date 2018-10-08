@@ -8,10 +8,14 @@ seq:
     size: 15
   - id: frametype
     type:
-      switch-on: ax25_header.ctrl
+      switch-on: ax25_header.ctrl & 0x13
       cases:
         0x03: ui_frame
         0x13: ui_frame
+        0x00: i_frame
+        0x02: i_frame
+        0x10: i_frame
+        0x12: i_frame
 #        0x11: s_frame
 
 types:
@@ -50,6 +54,15 @@ types:
         value: (u_src_ssid & 0x0f) >> 1
       dest_ssid:
         value: (u_dest_ssid & 0x0f) >> 1
+
+  i_frame:
+    seq:
+      - id: pid
+        type: u1
+      - id: ax25_info
+        type: str
+        encoding: ASCII
+        size-eos: true
 
   ui_frame:
     seq:
