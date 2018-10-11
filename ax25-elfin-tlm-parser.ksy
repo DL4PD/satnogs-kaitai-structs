@@ -1,16 +1,21 @@
 meta:
   id: elfin
-  endian: le
+  endian: be
+
 seq:
   - id: ax25_header
     type: ax25_hdr
     doc-ref: 'https://www.tapr.org/pub_ax25.html'
     size: 16
   - id: ax25_info
-    type: elfin_tlm_data
-    doc-ref: 'https://elfin.igpp.ucla.edu/s/Beacon-Format_v2.xlsx'
     process: elfin_pp
     size-eos: true
+    type:
+      switch-on: (_io.size > 78)
+      cases:
+        true: elfin_tlm_data
+        false: elfin_hkp_data
+
 types:
   ax25_hdr:
     seq:
@@ -36,7 +41,9 @@ types:
       - id: src_callsign
         process: ror(1)
         size: 6
+
   elfin_tlm_data:
+    doc-ref: 'https://elfin.igpp.ucla.edu/s/Beacon-Format_v2.xlsx'
     seq:
       - id: elfin_frame_start
         type: u1
@@ -301,9 +308,9 @@ types:
         type: u2
 
       - id: elfin_acb_sense_adc_data_current
-        type: u2be
+        type: u2le
       - id: elfin_acb_sense_adc_data_voltage
-        type: u2be
+        type: u2le
 
       - id: elfin_fc_counters_cmds_recv
         type: u1
@@ -430,4 +437,85 @@ types:
       - id: elfin_frame_end
         type: u1
         doc: '0x5e marks the end of a frame'
+
+  elfin_hkp_data:
+    seq:
+      - id: elfin_hskp_pwr1_rtcc_year
+        type: u1
+      - id: elfin_hskp_pwr1_rtcc_month
+        type: u1
+      - id: elfin_hskp_pwr1_rtcc_day
+        type: u1
+      - id: elfin_hskp_pwr1_rtcc_hour
+        type: u1
+      - id: elfin_hskp_pwr1_rtcc_minute
+        type: u1
+      - id: elfin_hskp_pwr1_rtcc_second
+        type: u1
+      - id: elfin_hskp_pwr1_pwr_board_id
+        type: u1
+      - id: elfin_hskp_pwr1_adc_data_adc_sa_volt_12
+        type: u2
+      - id: elfin_hskp_pwr1_adc_data_adc_sa_volt_34
+        type: u2
+      - id: elfin_hskp_pwr1_adc_data_adc_sa_volt_56
+        type: u2
+      - id: elfin_hskp_pwr1_adc_data_sa_short_circuit_current
+        type: u2
+      - id: elfin_hskp_pwr1_adc_data_bat_2_volt
+        type: u2
+      - id: elfin_hskp_pwr1_adc_data_bat_1_volt
+        type: u2
+      - id: elfin_hskp_pwr1_adc_data_reg_sa_volt_1
+        type: u2
+      - id: elfin_hskp_pwr1_adc_data_reg_sa_volt_2
+        type: u2
+      - id: elfin_hskp_pwr1_adc_data_reg_sa_volt_3
+        type: u2
+      - id: elfin_hskp_pwr1_adc_data_power_bus_current_1
+        type: u2
+      - id: elfin_hskp_pwr1_adc_data_power_bus_current_2
+        type: u2
+      - id: elfin_hskp_pwr1_bat_mon_1_avg_cur_reg
+        type: s2
+      - id: elfin_hskp_pwr1_bat_mon_1_temperature_register
+        type: s2
+      - id: elfin_hskp_pwr1_bat_mon_1_volt_reg
+        type: s2
+      - id: elfin_hskp_pwr1_bat_mon_1_cur_reg
+        type: s2
+      - id: elfin_hskp_pwr1_bat_mon_1_acc_curr_reg
+        type: s2
+      - id: elfin_hskp_pwr1_bat_mon_2_avg_cur_reg
+        type: s2
+      - id: elfin_hskp_pwr1_bat_mon_2_temperature_register
+        type: s2
+      - id: elfin_hskp_pwr1_bat_mon_2_volt_reg
+        type: s2
+      - id: elfin_hskp_pwr1_bat_mon_2_cur_reg
+        type: s2
+      - id: elfin_hskp_pwr1_bat_mon_2_acc_curr_reg
+        type: s2
+      - id: elfin_hskp_pwr1_bv_mon
+        type: u2
+      - id: elfin_hskp_pwr1_tmps_tmp1
+        type: s2
+      - id: elfin_hskp_pwr1_tmps_tmp2
+        type: s2
+      - id: elfin_hskp_pwr1_tmps_tmp3
+        type: s2
+      - id: elfin_hskp_pwr1_tmps_tmp4
+        type: s2
+      - id: elfin_hskp_pwr1_accumulated_curr_bat1_rsrc
+        type: u1
+      - id: elfin_hskp_pwr1_accumulated_curr_bat1_rarc
+        type: u1
+      - id: elfin_fc_status_safe_mode
+        type: b1
+      - id: elfin_fc_status_reserved
+        type: b3
+      - id: elfin_fc_status_early_orbit
+        type: b4
+        doc: 'Safe mode (first bit), early orbit flags (last 4 bits)'
+        type: u1
 
