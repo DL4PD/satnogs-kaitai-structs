@@ -60,8 +60,6 @@ types:
       - id: pid
         type: u1
       - id: ax25_info
-        type: str
-        encoding: ASCII
         size-eos: true
 
   ui_frame:
@@ -69,7 +67,5 @@ types:
       - id: pid
         type: u1
       - id: ax25_info
-        type: str
-        encoding: ASCII
         size-eos: true
 
