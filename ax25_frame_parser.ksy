@@ -1,5 +1,5 @@
 meta:
-  id: ax25_frames
+  id: ax25frames
   endian: le
 seq:
   - id: ax25_header
