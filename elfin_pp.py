@@ -1,8 +1,9 @@
 #
-# Preprocessor used in katai struct to remove the escape sequences of
+# Preprocessor used in kaitai struct to remove the escape sequences of
 # an ELFIN STAR telemetry frame
 #
 # Patrick Dohmen, DL4PD (dl4pd@darc.de)
+# With the kind help of Mikhail Yakshin
 #
 # Usage in 'kaitai struct':
 #
@@ -10,24 +11,36 @@
 #   preprocessor:
 #     seq:
 #       - id: databuf
-#         size-eos: true
 #         process: elfin_pp
+#         size-eos: true
 #
 
-import re, binascii
+import binascii
 
-class ElfinPp:
+class ElfinPP:
     def decode(self, bindata):
-        # convert bin to hex to use regex for substitution
-        hexdata = binascii.hexlify(bindata)
-        
-        # substitute ELFIN STAR payload escape sequence
-        hexdata = re.sub('2727', '27', hexdata)
-        hexdata = re.sub('275[Ee]', '5E', hexdata)
-        hexdata = re.sub('2793', '93', hexdata)
-        
-        # convert back to binary
-        returnbuf = binascii.unhexlify(hexdata)
-        
-        return returnbuf
+        i = 0
+        binlen = len(bindata)
+        out = b''
+        while i < binlen:
+            ch = ord(bindata[i])
+            if ch == 0x27 and i + 1 < binlen:
+                next_ch = ord(bindata[i + 1])
+                if next_ch == 0x27 or next_ch == 0x5e or next_ch == 0x9e:
+                    i += 1
+            out += bindata[i]
+            i += 1
+        return out
 
+if __name__ == "__main__":
+
+    # some examples
+    dec = ElfinPP()
+    print binascii.hexlify(binascii.unhexlify('0011272722'))
+    print binascii.hexlify(dec.decode(binascii.unhexlify('0011272722')))
+
+    print binascii.hexlify(binascii.unhexlify('0011a2727220'))
+    print binascii.hexlify(dec.decode(binascii.unhexlify('0011a2727220')))
+
+    print binascii.hexlify(binascii.unhexlify('930027005e0027932727275e'))
+    print binascii.hexlify(dec.decode(binascii.unhexlify('930027005e0027932727275e')))
