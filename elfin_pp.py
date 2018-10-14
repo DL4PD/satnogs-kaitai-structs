@@ -17,7 +17,7 @@
 
 import binascii
 
-class ElfinPP:
+class ElfinPp:
     def decode(self, bindata):
         i = 0
         binlen = len(bindata)
@@ -35,7 +35,7 @@ class ElfinPP:
 if __name__ == "__main__":
 
     # some examples
-    dec = ElfinPP()
+    dec = ElfinPp()
     print binascii.hexlify(binascii.unhexlify('0011272722'))
     print binascii.hexlify(dec.decode(binascii.unhexlify('0011272722')))
 
