@@ -11,10 +11,10 @@ seq:
     process: elfin_pp
     size-eos: true
     type:
-      switch-on: (_io.size > 78)
+      switch-on: _io.size
       cases:
-        true: elfin_tlm_data
-        false: elfin_hkp_data
+        269: elfin_tlm_data
+        _: elfin_cmd_response
 
 types:
   ax25_hdr:
@@ -48,7 +48,7 @@ types:
       - id: elfin_frame_start
         type: u1
         doc: |
-          0x94 marks the framestart
+          0x93 marks the framestart
           Any data byte following after this framestart must not contain:
           0x27, 0x5e or 0x93, as 0x93 is the framestart and 0x5e is the
           frameend! If a value reaches 0x93 or 0x5e, this byte is escaped by
@@ -438,7 +438,13 @@ types:
         type: u1
         doc: '0x5e marks the end of a frame'
 
-  elfin_hkp_data:
+#  elfin_hskp_data:
+#    seq:
+#    - id: elfin_hskp_pkt
+#        type: elfin_hskp_packet
+#        repeat: eos
+      
+  elfin_hskp_packet:
     seq:
       - id: elfin_hskp_pwr1_rtcc_year
         type: u1
@@ -508,7 +514,11 @@ types:
         type: s2
       - id: elfin_hskp_pwr1_accumulated_curr_bat1_rsrc
         type: u1
+      - id: elfin_hskp_pwr1_accumulated_curr_bat2_rsrc
+        type: u1
       - id: elfin_hskp_pwr1_accumulated_curr_bat1_rarc
+        type: u1
+      - id: elfin_hskp_pwr1_accumulated_curr_bat2_rarc
         type: u1
       - id: elfin_fc_status_safe_mode
         type: b1
@@ -517,5 +527,23 @@ types:
       - id: elfin_fc_status_early_orbit
         type: b4
         doc: 'Safe mode (first bit), early orbit flags (last 4 bits)'
+
+  elfin_cmd_response:
+    seq:
+      - id: elfin_frame_start
         type: u1
+        doc: '0x93 marks the framestart'
+      - id: elfin_opcode
+        type: u1
+      - id: cmd_response
+#        repeat: eos
+        type:
+          switch-on: elfin_opcode
+          cases:
+            0x30: elfin_hskp_packet
+      - id: elfin_fc_crc
+        type: u1
+      - id: elfin_frame_end
+        type: u1
+        doc: '0x5e marks the end of a frame'
 
