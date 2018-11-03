@@ -9,7 +9,6 @@ seq:
     size: 16
   - id: ax25_info
     type: cubebel1_data
-    size: 256
 
 types:
   ax25_hdr:
@@ -45,12 +44,12 @@ types:
         type: u2
       - id: cubebel1_reboots
         type: u1
-      - id: cubebel1_mcucr
+      - id: cubebel1_mcusr
         type: u1
       - id: cubebel1_pamp_temp
         type: u2
       - id: cubebel1_pamp_v
-        type: u2
+        type: u1
       - id: cubebel1_attn
         type: u1
       - id: cubebel1_v_bat
@@ -58,11 +57,11 @@ types:
       - id: cubebel1_v_sys
         type: u2
       - id: cubebel1_seq_nr
-        type: u1
+        type: u2
       - id: cubebel1_pwr_save
         type: u1
       - id: cubebel1_modem_rx_on_time
-        type: u1
+        type: u2
       - id: cubebel1_obc_can_state
         type: u1
       - id: cubebel1_eps_can_state
@@ -71,8 +70,16 @@ types:
         type: u1
       - id: cubebel1_data_type
         type: s1
+      - id: cubebel1_tlm
+        type:
+          switch-on: cubebel1_data_type
+          cases:
+            0x03: rf_message
+
+  rf_message:
+    seq:
       - id: cubebel1_rf_msg
         type: str
         encoding: ASCII
-        terminator: 0
+        size: _parent.cubebel1_info_size
 
