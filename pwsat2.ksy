@@ -10,7 +10,7 @@ seq:
     doc-ref: 'https://www.tapr.org/pub_ax25.html'
     size: 16
   - id: ax25_info
-    type: pwsat2_data
+    type: pwsat2_frame
     size-eos: true #: _io.size - 18
 
 types:
@@ -54,23 +54,55 @@ types:
         type: pwsat2_obc
       - id: pwsat2_adcs
         type: pwsat2_adcs
-        
+
+  pwsat2_frame:
+    seq:
+      - id: pwsat2_hdr
+        type: pwsat2_hdr
+        size: 3
+      - id: pwsat2_payload
+        type:
+          switch-on: pwsat2_hdr.pwsat2_apid & 0x3f
+          cases:
+            0x05: pwsat2_periodic_msg
+            0x0d: pwsat2_telemetry
+        size-eos: true
+
+  pwsat2_hdr:
+    seq:
+      - id: pwsat2_apid
+        type: u1
+      - id: res1
+        type: u1
+      - id: res2
+        type: u1
+
+  pwsat2_periodic_msg:
+    seq:
+      - id: pwsat2_periodic_msg_data
+        type: str
+        encoding: ASCII
+        size-eos: true
+
+  pwsat2_telemetry:
+    seq:
+      - id: pwsat2_obc
+        type: pwsat2_obc
+      - id: pwsat2_adcs
+        type: pwsat2_adcs
+
   pwsat2_obc:
     seq:
       - id: notparsed_start
         type: u1
         repeat: expr
-        repeat-expr: 6
+        repeat-expr: 3
       - id: pwsat2_obc_startup_boot_reason
         type: u2
       - id: pwsat2_obc_fw_crc
         type: u2
       - id: pwsat2_obc_mission_time
-        type: u4
-      - id: notparsed_1
-        type: u1
-        repeat: expr
-        repeat-expr: 4
+        type: u8
       - id: pwsat2_obc_ext_time
         type: u4
       - id: pwsat2_obc_err_cnt_comm
@@ -109,13 +141,13 @@ types:
       - id: notparsed_start
         type: u1
         repeat: expr
-        repeat-expr: 164
+        repeat-expr: 162
       - id: pwsat2_adcs_imtq_tmp_mcu
         type: u2
       - id: notparsed_1
         type: u1
         repeat: expr
-        repeat-expr: 4
+        repeat-expr: 6
       - id: pwsat2_adcs_imtq_state_status
         type: u1
       - id: reserved1
