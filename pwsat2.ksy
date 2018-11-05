@@ -5,16 +5,23 @@ meta:
 seq:
   - id: ax25_flag
     type: u1
+    doc: 'ax25flag:'
     doc: 'only needed with PWSAT-2 data-warehouse frames'
+    doc: 'not needed with gr-satnogs frames (flag and fcs are removed!)'
   - id: ax25_header
     type: ax25_hdr
     doc-ref: 'https://www.tapr.org/pub_ax25.html'
   - id: ax25_info
     type: pwsat2_frame
     size: _io.size - 19
+    doc: 'size:'
+    doc: 'only needed with PWSAT-2 data-warehouse frames'
+    doc: 'not needed with gr-satnogs frames (flag and fcs are removed!)'
   - id: ax25_fcs
     type: u2be
+    doc: 'ax25_fcs:'
     doc: 'only needed with PWSAT-2 data-warehouse frames'
+    doc: 'not needed with gr-satnogs frames (flag and fcs are removed!)'
 
 types:
   ax25_hdr:
@@ -519,4 +526,3 @@ types:
         type: u1
       - id: pwsat2_adcs_imtq_slftst_err_final
         type: u1
-
