@@ -1,59 +1,72 @@
 meta:
   id: ax25frames
-  endian: le
+  endian: be
+
 seq:
-  - id: ax25_header
+  - id: ax25_frame
+    type: ax25_frame
     doc-ref: 'https://www.tapr.org/pub_ax25.html'
-    type: hdr
-    size: 15
-  - id: frametype
-    type:
-      switch-on: ax25_header.ctrl & 0x13
-      cases:
-        0x03: ui_frame
-        0x13: ui_frame
-        0x00: i_frame
-        0x02: i_frame
-        0x10: i_frame
-        0x12: i_frame
-#        0x11: s_frame
 
 types:
-  dest_address:
+  ax25_frame:
     seq:
-      - id: dest_address_str
-        type: str
-        size: 6
-        encoding: ASCII
+    - id: ax25_header
+      type: ax25_header
+    - id: payload
+      type:
+        switch-on: ax25_header.ctl & 0x13
+        cases:
+          0x03: ui_frame
+          0x13: ui_frame
+          0x00: i_frame
+          0x02: i_frame
+          0x10: i_frame
+          0x12: i_frame
+          #0x11: s_frame
 
-  src_address:
+  ax25_header:
     seq:
-      - id: src_address_str
-        type: str
-        size: 6
-        encoding: ASCII
-
-  hdr:
-    seq:
-    - id: dest_address
-      type: dest_address
-      process: ror(1)
-      size: 6
-    - id: u_dest_ssid
-      type: u1
-    - id: src_address
-      type: src_address
-      process: ror(1)
-      size: 6
-    - id: u_src_ssid
-      type: u1
-    - id: ctrl
-      type: u1
+      - id: dest_callsign_raw
+        type: dest_callsign_raw
+      - id: dest_ssid_raw
+        type: u1
+      - id: src_callsign_raw
+        type: src_callsign_raw
+      - id: src_ssid_raw
+        type: u1
+      - id: ctl
+        type: u1
+      - id: pid
+        type: u1
     instances:
       src_ssid:
-        value: (u_src_ssid & 0x0f) >> 1
+        value: (src_ssid_raw & 0x0f) >> 1
       dest_ssid:
-        value: (u_dest_ssid & 0x0f) >> 1
+        value: (dest_ssid_raw & 0x0f) >> 1
+  dest_callsign_raw:
+    seq:
+      - id: dest_callsign_ror
+        process: ror(1)
+        size: 6
+        type: dest_callsign
+  src_callsign_raw:
+    seq:
+      - id: src_callsign_ror
+        process: ror(1)
+        type: src_callsign
+        size: 6
+  dest_callsign:
+    seq:
+      - id: dest_callsign
+        type: str
+        encoding: ASCII
+        size: 6
+  src_callsign:
+    seq:
+      - id: src_callsign
+        type: str
+        encoding: ASCII
+        size: 6
 
   i_frame:
     seq:
