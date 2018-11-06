@@ -17,41 +17,41 @@ types:
 
   ax25_hdr:
     seq:
-      - id: dest_callsign
-        type: dest_callsign
+      - id: dest_callsign_raw
+        type: dest_callsign_raw
       - id: dest_ssid
         type: u1
-      - id: src_callsign
-        type: src_callsign
+      - id: src_callsign_raw
+        type: src_callsign_raw
       - id: src_ssid
         type: u1
       - id: ctl
         type: u1
       - id: pid
         type: u1
+  dest_callsign_raw:
+    seq:
+      - id: dest_callsign_ror
+        process: ror(1)
+        size: 6
+        type: dest_callsign
+  src_callsign_raw:
+    seq:
+      - id: src_callsign_ror
+        process: ror(1)
+        type: src_callsign
+        size: 6
+
   dest_callsign:
     seq:
       - id: dest_callsign
-        process: ror(1)
-        size: 6
-        type: dest_asc_str
-  src_callsign:
-    seq:
-      - id: src_callsign
-        process: ror(1)
-        type: src_asc_str
-        size: 6
-
-  dest_asc_str:
-    seq:
-      - id: asc_str
         type: str
         encoding: ASCII
         size: 6
 
-  src_asc_str:
+  src_callsign:
     seq:
-      - id: asc_str
+      - id: src_callsign
         type: str
         encoding: ASCII
         size: 6
