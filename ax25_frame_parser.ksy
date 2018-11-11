@@ -36,8 +36,6 @@ types:
         type: u1
       - id: ctl
         type: u1
-      - id: pid
-        type: u1
     instances:
       src_ssid:
         value: (src_ssid_raw & 0x0f) >> 1
