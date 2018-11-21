@@ -486,7 +486,7 @@ types:
         type: s2
         doc: 'value [°C]'
       - id: temp_nz
-        type: s2le
+        type: s2
         doc: 'value [°C]'
       - id: volt3v
         type: s4
