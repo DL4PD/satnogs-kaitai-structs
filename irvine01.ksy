@@ -408,6 +408,7 @@ types:
       - id: checksum
         type: u2
       - id: body
+        type: irvine01_udp_payload
         size-eos: true
 
   ipv6_pkt:
@@ -456,4 +457,70 @@ types:
             0: option_hop_by_hop
             6: tcp_segm
             59: no_next_header
+
+  irvine01_udp_payload:
+    seq:
+      - id: spacecraft_response
+        type: u1
+      - id: spacecraft_id
+        type: str
+        encoding: ASCII
+        terminator: 0
+      - id: ldc
+        type: u2
+        doc: 'value = ldc * 256 [s]'
+      - id: gyro
+        type: s4
+        repeat: expr
+        repeat-expr: 3
+        doc: 'value = gyro / (1024.0 * 1024.0) [deg/s]'
+      - id: mag
+        type: s4
+        repeat: expr
+        repeat-expr: 3
+        doc: 'value = mag / (1024.0 * 1024.0) [nT]'
+      - id: daughter_a_tmp_sensor
+        type: s2
+        doc: 'value [°C]'
+      - id: three_v_pl_tmp_sensor
+        type: s2
+        doc: 'value [°C]'
+      - id: temp_nz
+        type: s2le
+        doc: 'value [°C]'
+      - id: volt3v
+        type: s4
+      - id: curr3v
+        type: s4
+      - id: volt5vpl
+        type: s4
+      - id: curr5vpl
+        type: s4
+    instances:
+      ldc_secs:
+        value: ldc * 256.0
+      ldc_mins:
+        value: ldc_secs / 60.0
+      ldc_hrs:
+        value: ldc_mins / 60.0
+      mag_x:
+        value: mag[0] / (1024.0 * 1024.0)
+      mag_y:
+        value: mag[1] / (1024.0 * 1024.0)
+      mag_z:
+        value: mag[2] / (1024.0 * 1024.0)
+
+      gyro_x:
+        value: gyro[0] / (1024.0 * 1024.0)
+      gyro_y:
+        value: gyro[1] / (1024.0 * 1024.0)
+      gyro_z:
+        value: gyro[2] / (1024.0 * 1024.0)
+  
+#      - id: irvine01_unparsed_payload
+#        size-eos: true
+        doc: |
+          IRVINE-01 payload inside a UDP datagram multicast packet
+          Currently partially reverse-engineered
+          Conversion values taken from source-code
 
