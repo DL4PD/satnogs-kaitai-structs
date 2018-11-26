@@ -1,5 +1,5 @@
 meta:
-  id: ax25_arpa
+  id: irvine01
   endian: be
 
 seq:
@@ -82,10 +82,10 @@ types:
           switch-on: pid
           cases:
             0xCC: ipv4_pkt
-            0xF0: none
+            0xF0: none_l3
         size-eos: true
 
-  none:
+  none_l3:
     seq:
       - id: data
         size-eos: true
@@ -280,7 +280,7 @@ types:
         value: b1 & 0xf
       ihl_bytes:
         value: ihl * 4
-  
+
   ipv4_options:
     seq:
       - id: entries
@@ -347,7 +347,7 @@ types:
         5: redirect
         8: echo
         11: time_exceeded
-  
+
   destination_unreachable_msg:
     seq:
       - id: code
@@ -481,21 +481,26 @@ types:
         doc: 'value = mag / (1024.0 * 1024.0) [nT]'
       - id: daughter_a_tmp_sensor
         type: s2
-        doc: 'value [°C]'
+        doc: 'value daughter_a_tmp_sensor / 64.0 [°C]'
       - id: three_v_pl_tmp_sensor
         type: s2
-        doc: 'value [°C]'
+        doc: 'value = three_v_pl_tmp_sensor / 64.0 [°C]'
       - id: temp_nz
         type: s2
-        doc: 'value [°C]'
+        doc: 'value = temp_nz / 64.0 [°C]'
       - id: volt3v
         type: s4
+        doc: 'value = volt3v / (256.0 * 256.0)'
       - id: curr3v
         type: s4
+        doc: 'value = curr3v / (256.0 * 256.0)'
       - id: volt5vpl
         type: s4
+        doc: 'value = volt5vpl / (256.0 * 256.0)'
       - id: curr5vpl
         type: s4
+        doc: 'value = curr5vpl / (256.0 * 256.0)'
+
     instances:
       ldc_secs:
         value: ldc * 256.0
@@ -503,12 +508,14 @@ types:
         value: ldc_secs / 60.0
       ldc_hrs:
         value: ldc_mins / 60.0
+
       mag_x:
         value: mag[0] / (1024.0 * 1024.0)
       mag_y:
         value: mag[1] / (1024.0 * 1024.0)
       mag_z:
         value: mag[2] / (1024.0 * 1024.0)
+        doc: 'Magnitudes in [nT]!'
 
       gyro_x:
         value: gyro[0] / (1024.0 * 1024.0)
@@ -516,11 +523,34 @@ types:
         value: gyro[1] / (1024.0 * 1024.0)
       gyro_z:
         value: gyro[2] / (1024.0 * 1024.0)
-  
-#      - id: irvine01_unparsed_payload
-#        size-eos: true
+        doc: 'Gyroscope in [deg/s]!'
+
+      daughter_a_tmp_sensor_val_k:
+        value: daughter_a_tmp_sensor / 64.0
+      three_v_pl_tmp_sensor_val_k:
+        value: three_v_pl_tmp_sensor / 64.0
+      temp_nz_val_k:
+        value: temp_nz / 64.0
+        doc: 'Temperatures in [K]!'
+      daughter_a_tmp_sensor_val_deg_c:
+        value: daughter_a_tmp_sensor_val_k - 273.15
+      three_v_pl_tmp_sensor_val_deg_c:
+        value: three_v_pl_tmp_sensor_val_k - 273.15
+      temp_nz_val_deg_c:
+        value: temp_nz_val_k - 273.15
+        doc: 'Temperatures in [°C]!'
+
+      volt3v_val:
+        value: volt3v / (256.0 * 256.0)
+      curr3v_val:
+        value: curr3v / (256.0 * 256.0)
+      volt5vpl_val:
+        value: volt5vpl / (256.0 * 256.0)
+      curr5vpl_val:
+        value: curr5vpl / (256.0 * 256.0)
+        doc: 'Voltages in [V]! Currents in [A]!'
+
         doc: |
           IRVINE-01 payload inside a UDP datagram multicast packet
           Currently partially reverse-engineered
           Conversion values taken from source-code
-
